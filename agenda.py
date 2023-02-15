@@ -33,8 +33,13 @@ def incluirEditarContato(contato, telefone, email, endereco):
     }
     print(f">>>>> Contato {contato} adicionado/editado com sucesso!")
 
+def excluirContato(contato):
+    AGENDA.pop(contato)
+    print(f">>>>> Contato {contato} excluido com sucesso!")
+
 mostrarAgenda()
 incluirEditarContato("Paulo", "93333-3333", "paulo@email.com", "Av. 3")
 incluirEditarContato("João", "93333-4444", "jp@email.com", "Av. 2")
 incluirEditarContato("José", None, None, "Av. 4")
+excluirContato("Maria")
 mostrarAgenda()
