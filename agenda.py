@@ -3,23 +3,30 @@
 AGENDA = {}
 
 AGENDA['Maria'] = {
-    'telefone': "91111-1111",
-    'email': "maria@email.com",
-    'endereco': "Av. 1"
+    "telefone": "91111-1111",
+    "email": "maria@email.com",
+    "endereco": "Av. 1"
 }
 
 AGENDA['João'] = {
-    'telefone': "92222-2222",
-    'email': "joao@email.com",
-    'endereco': "Av. 2"
+    "telefone": "92222-2222",
+    "email": "joao@email.com",
+    "endereco": "Av. 2"
 }
 
 def mostrarAgenda():
     for contato in AGENDA:
         print("Nome:", contato)
-        print("Telefone:", AGENDA[contato]['telefone'])
-        print("E-mail:", AGENDA[contato]['email'])
-        print("Endereço:", AGENDA[contato]['endereco'])
+        print("Telefone:", AGENDA[contato]["telefone"])
+        print("E-mail:", AGENDA[contato]["email"])
+        print("Endereço:", AGENDA[contato]["endereco"])
         print("-----------------------------")
 
-mostrarAgenda()
+def buscarContato(contato):
+    print("Nome:", contato)
+    print("Telefone:", AGENDA[contato]["telefone"])
+    print("E-mail:", AGENDA[contato]["email"])
+    print("Endereço:", AGENDA[contato]["endereco"])
+
+# mostrarAgenda()
+buscarContato("Maria")
