@@ -25,5 +25,14 @@ def buscarContato(contato):
     print("E-mail:", AGENDA[contato]["email"])
     print("Endereço:", AGENDA[contato]["endereco"])
 
-#mostrarAgenda()
-buscarContato("João")
+def incluirContato(contato, telefone, email, endereco):
+    AGENDA[contato] = {
+        "telefone": telefone,
+        "email": email,
+        "endereco": endereco
+    }
+    print(f">>>>> Contato {contato} adicionado com sucesso!")
+
+mostrarAgenda()
+incluirContato("Paulo", "93333-3333", "paulo@email.com", "Av. 3")
+mostrarAgenda()
