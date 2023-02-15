@@ -2,9 +2,24 @@
 
 AGENDA = {}
 
-def primeiro_metodo():
-    print("Finalmente escrevi o primeiro método!")
+AGENDA['Maria'] = {
+    'telefone': "91111-1111",
+    'email': "maria@email.com",
+    'endereco': "Av. 1"
+}
 
-primeiro_metodo()
-primeiro_metodo()
-primeiro_metodo()
+AGENDA['João'] = {
+    'telefone': "92222-2222",
+    'email': "joao@email.com",
+    'endereco': "Av. 2"
+}
+
+def mostrarAgenda():
+    for contato in AGENDA:
+        print("Nome:", contato)
+        print("Telefone:", AGENDA[contato]['telefone'])
+        print("E-mail:", AGENDA[contato]['email'])
+        print("Endereço:", AGENDA[contato]['endereco'])
+        print("-----------------------------")
+
+mostrarAgenda()
