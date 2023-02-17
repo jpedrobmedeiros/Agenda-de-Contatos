@@ -2,45 +2,73 @@
 
 AGENDA = {}
 
-AGENDA['Maria'] = {
-    "telefone": "91111-1111",
-    "email": "maria@email.com",
-    "endereco": "Av. 1"
-}
+# AGENDA['Maria'] = {
+#     "telefone": "91111-1111",
+#     "email": "maria@email.com",
+#     "endereco": "Av. 1"
+# }
 
-AGENDA['João'] = {
-    "telefone": "92222-2222",
-    "email": "joao@email.com",
-    "endereco": "Av. 2"
-}
+# AGENDA['João'] = {
+#     "telefone": "92222-2222",
+#     "email": "joao@email.com",
+#     "endereco": "Av. 2"
+# }
 
 def mostrarAgenda():
-    for contato in AGENDA:
-        buscarContato(contato)
+    if AGENDA:
+        for contato in AGENDA:
+            buscarContato(contato)
+    else:
+        print("-------------------------------------")
+        print("A agenda está vazia!")
+        print("-------------------------------------")
 
 def buscarContato(contato):
-    print("-------------------------------------")
-    print("Nome:", contato)
-    print("Telefone:", AGENDA[contato]["telefone"])
-    print("E-mail:", AGENDA[contato]["email"])
-    print("Endereço:", AGENDA[contato]["endereco"])
-    print("-------------------------------------")
+    try:
+        print("-------------------------------------")
+        print("Nome:", contato)
+        print("Telefone:", AGENDA[contato]["telefone"])
+        print("E-mail:", AGENDA[contato]["email"])
+        print("Endereço:", AGENDA[contato]["endereco"])
+        print("-------------------------------------")
+    except KeyError:
+        print("-------------------------------------")
+        print(">>>>> Contato inexistente!")
+        print("-------------------------------------")
+    except Exception as erro:
+        print("-------------------------------------")
+        print(">>>>> Um erro inesperado ocorreu!")
+        print("-------------------------------------")
 
-def incluirEditarContato(contato, telefone, email, endereco):
+def incluirEditarContato(contato, acao):
+    telefone = input("Digite o telefone do contato: ")
+    email = input("Digite o e-mail do contato: ")
+    endereco = input("Digite o endereco do contato: ")
+
     AGENDA[contato] = {
         "telefone": telefone,
         "email": email,
         "endereco": endereco
     }
+
     print("-------------------------------------")
-    print(f">>>>> Contato {contato} adicionado/editado com sucesso!")
+    print(f">>>>> Contato {contato} {acao} com sucesso!")
     print("-------------------------------------")
 
 def excluirContato(contato):
-    AGENDA.pop(contato)
-    print("-------------------------------------")
-    print(f">>>>> Contato {contato} excluido com sucesso!")
-    print("-------------------------------------")
+    try:
+        AGENDA.pop(contato)
+        print("-------------------------------------")
+        print(f">>>>> Contato {contato} excluido com sucesso!")
+        print("-------------------------------------")
+    except KeyError:
+        print("-------------------------------------")
+        print(">>>>> Contato inexistente!")
+        print("-------------------------------------")
+    except Exception as erro:
+        print("-------------------------------------")
+        print(">>>>> Um erro inesperado ocorreu!")
+        print("-------------------------------------")
 
 def imprimirMenu():
     print("-------------------------------------")
@@ -61,12 +89,24 @@ while True:
     elif OPCAO == "2":
         contato = input("Digite o nome do contato: ")
         buscarContato(contato)
-    elif OPCAO == "3" or OPCAO == "4":
+    elif OPCAO == "3":
         contato = input("Digite o nome do contato: ")
-        telefone = input("Digite o telefone do contato: ")
-        email = input("Digite o e-mail do contato: ")
-        endereco = input("Digite o endereco do contato: ")
-        incluirEditarContato(contato, telefone, email, endereco)
+        try:
+            AGENDA[contato]
+            print("-------------------------------------")
+            print(">>>>> O contato já existe!")
+            print("-------------------------------------")
+        except:    
+            incluirEditarContato(contato, "incluído")
+    elif OPCAO == "4":
+        contato = input("Digite o nome do contato: ")
+        try:
+            AGENDA[contato]
+            incluirEditarContato(contato, "editado")
+        except:
+            print("-------------------------------------")
+            print(">>>>> O contato não existe!")
+            print("-------------------------------------")
     elif OPCAO == "5":
         contato = input("Digite o nome do contato: ")
         excluirContato(contato)
