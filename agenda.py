@@ -2,17 +2,17 @@
 
 AGENDA = {}
 
-# AGENDA['Maria'] = {
-#     "telefone": "91111-1111",
-#     "email": "maria@email.com",
-#     "endereco": "Av. 1"
-# }
+AGENDA['Maria'] = {
+     "telefone": "91111-1111",
+     "email": "maria@email.com",
+     "endereco": "Av. 1"
+}
 
-# AGENDA['João'] = {
-#     "telefone": "92222-2222",
-#     "email": "joao@email.com",
-#     "endereco": "Av. 2"
-# }
+AGENDA['João'] = {
+     "telefone": "92222-2222",
+     "email": "joao@email.com",
+     "endereco": "Av. 2"
+}
 
 def mostrarAgenda():
     if AGENDA:
@@ -38,6 +38,7 @@ def buscarContato(contato):
     except Exception as erro:
         print("-------------------------------------")
         print(">>>>> Um erro inesperado ocorreu!")
+        print(f"Detalhes: {erro}")
         print("-------------------------------------")
 
 def incluirEditarContato(contato, acao):
@@ -68,6 +69,26 @@ def excluirContato(contato):
     except Exception as erro:
         print("-------------------------------------")
         print(">>>>> Um erro inesperado ocorreu!")
+        print(f"Detalhes: {erro}")
+        print("-------------------------------------")
+
+def exportarAgenda():
+    try:
+        with open("Projetos/Agenda de Contatos/agenda.csv", "w") as arquivo:
+            arquivo.write("nome,telefone,e-mail,endereço\n")
+            for contato in AGENDA:
+                telefone = AGENDA[contato]["telefone"]
+                email = AGENDA[contato]["email"]
+                endereco = AGENDA[contato]["endereco"]
+                sep = ","
+                arquivo.write(f"{contato}{sep}{telefone}{sep}{email}{sep}{endereco}\n")
+            print("-------------------------------------")
+            print(">>>>> Agenda exportada com sucesso!")
+            print("-------------------------------------")
+    except Exception as erro:
+        print("-------------------------------------")
+        print(">>>>> Um erro inesperado ocorreu!")
+        print(f"Detalhes: {erro}")
         print("-------------------------------------")
 
 def imprimirMenu():
@@ -77,6 +98,7 @@ def imprimirMenu():
     print("3 - Incluir Contato")
     print("4 - Editar Contato")
     print("5 - Excluir Contato")
+    print("6 - Exportar agenda para CSV")
     print("0 - Fechar Programa")
     print("-------------------------------------")
 
@@ -110,6 +132,8 @@ while True:
     elif OPCAO == "5":
         contato = input("Digite o nome do contato: ")
         excluirContato(contato)
+    elif OPCAO == "6":
+        exportarAgenda()
     elif OPCAO == "0":
         print("-------------------------------------")
         print(">>>>> Fechando o programa...")
