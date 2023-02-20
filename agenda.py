@@ -2,17 +2,17 @@
 
 AGENDA = {}
 
-AGENDA['Maria'] = {
-     "telefone": "91111-1111",
-     "email": "maria@email.com",
-     "endereco": "Av. 1"
-}
+# AGENDA['Maria'] = {
+#      "telefone": "91111-1111",
+#      "email": "maria@email.com",
+#      "endereco": "Av. 1"
+# }
 
-AGENDA['João'] = {
-     "telefone": "92222-2222",
-     "email": "joao@email.com",
-     "endereco": "Av. 2"
-}
+# AGENDA['João'] = {
+#      "telefone": "92222-2222",
+#      "email": "joao@email.com",
+#      "endereco": "Av. 2"
+# }
 
 def mostrarAgenda():
     if AGENDA:
@@ -33,7 +33,7 @@ def buscarContato(contato):
         print("-------------------------------------")
     except KeyError:
         print("-------------------------------------")
-        print(">>>>> Contato inexistente!")
+        print(f">>>>> Contato {contato} inexistente!")
         print("-------------------------------------")
     except Exception as erro:
         print("-------------------------------------")
@@ -41,11 +41,32 @@ def buscarContato(contato):
         print(f"Detalhes: {erro}")
         print("-------------------------------------")
 
-def incluirEditarContato(contato, acao):
+def lerDetalhes():
     telefone = input("Digite o telefone do contato: ")
     email = input("Digite o e-mail do contato: ")
     endereco = input("Digite o endereco do contato: ")
+    return telefone, email, endereco
 
+def incluirEditarContato(contato, telefone, email, endereco, acao):
+    if acao == "incluído":
+        try:
+            AGENDA[contato]
+            print("-------------------------------------")
+            print(f">>>>> O contato {contato} já existe!")
+            print("-------------------------------------")
+            return None
+        except:
+            pass
+    elif acao == "editado":
+        try:
+            AGENDA[contato]
+            pass
+        except:
+            print("-------------------------------------")
+            print(f">>>>> O contato {contato} não existe!")
+            print("-------------------------------------")
+            return None
+    
     AGENDA[contato] = {
         "telefone": telefone,
         "email": email,
@@ -64,7 +85,7 @@ def excluirContato(contato):
         print("-------------------------------------")
     except KeyError:
         print("-------------------------------------")
-        print(">>>>> Contato inexistente!")
+        print(f">>>>> Contato {contato} inexistente!")
         print("-------------------------------------")
     except Exception as erro:
         print("-------------------------------------")
@@ -91,6 +112,29 @@ def exportarAgenda():
         print(f"Detalhes: {erro}")
         print("-------------------------------------")
 
+def importarContatos(nomeArquivo):
+    try:
+        with open(nomeArquivo) as arquivo:
+            linhas = arquivo.readlines()
+            for linha in linhas:
+                if linha == linhas[0]:
+                    continue
+                informacoes = linha.strip().split(",")
+                contato = informacoes[0]
+                telefone = informacoes[1]
+                email = informacoes[2]
+                endereco = informacoes[3]
+                incluirEditarContato(contato, telefone, email, endereco, "incluído")
+    except FileNotFoundError:
+        print("-------------------------------------")
+        print(">>>>> Arquivo não encontrado!")
+        print("-------------------------------------")
+    except Exception as erro:
+        print("-------------------------------------")
+        print(">>>>> Um erro inesperado ocorreu!")
+        print(f"Detalhes: {erro}")
+        print("-------------------------------------")
+
 def imprimirMenu():
     print("-------------------------------------")
     print("1 - Mostrar Agenda")
@@ -99,6 +143,7 @@ def imprimirMenu():
     print("4 - Editar Contato")
     print("5 - Excluir Contato")
     print("6 - Exportar agenda para CSV")
+    print("7 - Importar contatos CSV")
     print("0 - Fechar Programa")
     print("-------------------------------------")
 
@@ -113,27 +158,20 @@ while True:
         buscarContato(contato)
     elif OPCAO == "3":
         contato = input("Digite o nome do contato: ")
-        try:
-            AGENDA[contato]
-            print("-------------------------------------")
-            print(">>>>> O contato já existe!")
-            print("-------------------------------------")
-        except:    
-            incluirEditarContato(contato, "incluído")
+        telefone, email, endereco = lerDetalhes()
+        incluirEditarContato(contato, telefone, email, endereco, "incluído")
     elif OPCAO == "4":
         contato = input("Digite o nome do contato: ")
-        try:
-            AGENDA[contato]
-            incluirEditarContato(contato, "editado")
-        except:
-            print("-------------------------------------")
-            print(">>>>> O contato não existe!")
-            print("-------------------------------------")
+        telefone, email, endereco = lerDetalhes()
+        incluirEditarContato(contato, telefone, email, endereco, "editado")
     elif OPCAO == "5":
         contato = input("Digite o nome do contato: ")
         excluirContato(contato)
     elif OPCAO == "6":
         exportarAgenda()
+    elif OPCAO == "7":
+        nomeArquivo = input("Digite o nome do arquivo para importar: ")
+        importarContatos(nomeArquivo)
     elif OPCAO == "0":
         print("-------------------------------------")
         print(">>>>> Fechando o programa...")
