@@ -73,9 +73,11 @@ def incluirEditarContato(contato, telefone, email, endereco, acao):
         "endereco": endereco
     }
 
-    print("-------------------------------------")
-    print(f">>>>> Contato {contato} {acao} com sucesso!")
-    print("-------------------------------------")
+    if acao != "carregado":
+        print("-------------------------------------")
+        print(f">>>>> Contato {contato} {acao} com sucesso!")
+        print("-------------------------------------")
+        salvarAgenda()
 
 def excluirContato(contato):
     try:
@@ -83,6 +85,7 @@ def excluirContato(contato):
         print("-------------------------------------")
         print(f">>>>> Contato {contato} excluido com sucesso!")
         print("-------------------------------------")
+        salvarAgenda()
     except KeyError:
         print("-------------------------------------")
         print(f">>>>> Contato {contato} inexistente!")
@@ -93,9 +96,9 @@ def excluirContato(contato):
         print(f"Detalhes: {erro}")
         print("-------------------------------------")
 
-def exportarAgenda():
+def exportarAgenda(nomeArquivo):
     try:
-        with open("Projetos/Agenda de Contatos/agenda.csv", "w") as arquivo:
+        with open(nomeArquivo, "w") as arquivo:
             arquivo.write("nome,telefone,e-mail,endereço\n")
             for contato in AGENDA:
                 telefone = AGENDA[contato]["telefone"]
@@ -112,10 +115,14 @@ def exportarAgenda():
         print(f"Detalhes: {erro}")
         print("-------------------------------------")
 
-def importarContatos(nomeArquivo):
+def importarContatos(nomeArquivo, modo):
     try:
         with open(nomeArquivo) as arquivo:
             linhas = arquivo.readlines()
+            if len(linhas) == 1:
+                print("-------------------------------------")
+                print(">>>>> A agenda está vazia!")
+                print("-------------------------------------")
             for linha in linhas:
                 if linha == linhas[0]:
                     continue
@@ -124,16 +131,34 @@ def importarContatos(nomeArquivo):
                 telefone = informacoes[1]
                 email = informacoes[2]
                 endereco = informacoes[3]
-                incluirEditarContato(contato, telefone, email, endereco, "incluído")
+                if modo == "menu":
+                    incluirEditarContato(contato, telefone, email, endereco, "incluído")
+                elif modo == "auto":
+                    incluirEditarContato(contato, telefone, email, endereco, "carregado")
+                    print("-------------------------------------")
+                    print(">>>>> Agenda carregada com sucesso!")
+                    print(f"{len(AGENDA)} registro(s) carregado(s).")
+                    print("-------------------------------------")
     except FileNotFoundError:
-        print("-------------------------------------")
-        print(">>>>> Arquivo não encontrado!")
-        print("-------------------------------------")
+        if modo == "auto":
+            print("-------------------------------------")
+            print(">>>>> A agenda está vazia!")
+            print("-------------------------------------")
+        else:
+            print("-------------------------------------")
+            print(">>>>> Arquivo não encontrado!")
+            print("-------------------------------------")
     except Exception as erro:
         print("-------------------------------------")
         print(">>>>> Um erro inesperado ocorreu!")
         print(f"Detalhes: {erro}")
         print("-------------------------------------")
+
+def salvarAgenda():
+    exportarAgenda("Projetos/Agenda de Contatos/bancodedados.csv")
+
+def carregarAgenda():
+    importarContatos("Projetos/Agenda de Contatos/bancodedados.csv", "auto")
 
 def imprimirMenu():
     print("-------------------------------------")
@@ -146,6 +171,8 @@ def imprimirMenu():
     print("7 - Importar contatos CSV")
     print("0 - Fechar Programa")
     print("-------------------------------------")
+
+carregarAgenda()
 
 while True:
     imprimirMenu()
@@ -168,10 +195,11 @@ while True:
         contato = input("Digite o nome do contato: ")
         excluirContato(contato)
     elif OPCAO == "6":
-        exportarAgenda()
+        nomeArquivo = input("Digite o nome do arquivo para exportar: ")
+        exportarAgenda(nomeArquivo)
     elif OPCAO == "7":
         nomeArquivo = input("Digite o nome do arquivo para importar: ")
-        importarContatos(nomeArquivo)
+        importarContatos(nomeArquivo, "menu")
     elif OPCAO == "0":
         print("-------------------------------------")
         print(">>>>> Fechando o programa...")
